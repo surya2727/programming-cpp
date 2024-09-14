@@ -1,0 +1,75 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
+
+int main() {
+    srand(time(0));
+
+    int difficultyLevel = 2;
+    int secretNumber = rand() % 100 + 1;
+    int guess;
+    int attempts = 0;
+
+    cout << "Let's Play Guess a Number...\n\n";
+    cout << "Difficulty Level: " << difficultyLevel << endl;
+
+    while (true) {
+        cout << "Guess a Number: ";
+        cin >> guess;
+
+        if (guess == secretNumber) {
+            cout << "Congratulations! You guessed the number in " << attempts << " attempts.\n";
+            break;
+        } else {
+            attempts++;
+
+            if (guess > secretNumber) {
+                if (guess - secretNumber <= 5) {
+                    cout << "Too high but very close!\n";
+                } else {
+                    cout << "Too high.\n";
+                }
+            } else {
+                if (secretNumber - guess <= 5) {
+                    cout << "Too low but very close!\n";
+                } else {
+                    cout << "Too low.\n";
+                }
+            }
+        }
+
+        if (attempts >= 10) {
+            cout << "You failed the game. The correct number was " << secretNumber << ".\n";
+            break;
+        }
+    }
+
+    cout << "\nOptions:\n";
+    cout << "1. Play\n";
+    cout << "2. View Leaderboard\n";
+    cout << "3. Exit\n";
+    cout << "Enter your choice: ";
+
+    int choice;
+    cin >> choice;
+
+    switch (choice) {
+        case 1:
+            // Restart the game
+            main();
+            break;
+        case 2:
+            // Implement leaderboard functionality
+            cout << "Leaderboard functionality not yet implemented.\n";
+            break;
+        case 3:
+            // Exit the game
+            cout << "Thank you for playing!\n";
+            return 0;
+        default:
+            cout << "Invalid choice. Please try again.\n";
+            break;
+    }
+}
