@@ -1,0 +1,140 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+struct Task {
+    string taskName;
+    string category;
+    string priority;
+    string dueDate;
+    bool isCompleted;
+    string reminderTime;
+};
+
+vector<Task> tasks;
+
+void addTask() {
+    Task newTask;
+    cout << "Enter Task Name: ";
+    getline(cin, newTask.taskName);
+    cout << "Enter Category: ";
+    getline(cin, newTask.category);
+    cout << "Enter Priority (HIGH, MEDIUM, LOW): ";
+    getline(cin, newTask.priority);
+    cout << "Enter Due Date (YYYY-MM-DD): ";
+    getline(cin, newTask.dueDate);
+    newTask.isCompleted = false;
+    cout << "Enter Reminder Time (HH:MM): ";
+    getline(cin, newTask.reminderTime);
+    tasks.push_back(newTask);
+    cout << "Task added successfully.\n";
+}
+
+void viewTasks() {
+    cout << "Tasks:\n";
+    cout << "Task Name\tCategory\tPriority\tDueDate\tStatus\tReminder\n";
+    for (const Task& task : tasks) {
+        cout << task.taskName << "\t" << task.category << "\t" << task.priority << "\t" << task.dueDate << "\t" << (task.isCompleted ? "Completed" : "Not Completed") << "\t" << task.reminderTime << endl;
+    }
+}
+
+void markTaskAsCompleted(int index) {
+    if (index >= 0 && index < tasks.size()) {
+        tasks[index].isCompleted = true;
+        cout << "Task marked as completed.\n";
+    } else {
+        cout << "Invalid task index.\n";
+    }
+}
+
+void deleteTask(int index) {
+    if (index >= 0 && index < tasks.size()) {
+        tasks.erase(tasks.begin() + index);
+        cout << "Task deleted.\n";
+    } else {
+        cout << "Invalid task index.\n";
+    }
+}
+
+void setReminder(int index) {
+    if (index >= 0 && index < tasks.size()) {
+        cout << "Enter new reminder time (HH:MM): ";
+        getline(cin, tasks[index].reminderTime);
+        cout << "Reminder updated.\n";
+    } else {
+        cout << "Invalid task index.\n";
+    }
+}
+
+void filterTasksByCategory(const string& category) {
+    cout << "Filtered Tasks:\n";
+    cout << "Task Name\tCategory\tPriority\tDueDate\tStatus\tReminder\n";
+    for (const Task& task : tasks) {
+        if (task.category == category) {
+            cout << task.taskName << "\t" << task.category << "\t" << task.priority << "\t" << task.dueDate << "\t" << (task.isCompleted ? "Completed" : "Not Completed") << "\t" << task.reminderTime << endl;
+        }
+    }
+}
+
+int main() {
+    while (true) {
+        cout << "Menu:\n";
+        cout << "1. Add Task\n";
+        cout << "2. View Tasks\n";
+        cout << "3. Mark Task as Completed\n";
+        cout << "4. Delete Task\n";
+        cout << "5. Set Reminder\n";
+        cout << "6. Filter Tasks By Category\n";
+        cout << "7. Exit\n";
+        cout << "Enter your choice: ";
+
+        int choice;
+        cin >> choice;
+        cin.ignore();
+
+        switch (choice) {
+            case 1:
+                addTask();
+                break;
+            case 2:
+                viewTasks();
+                break;
+            case 3: {
+                int index;
+                cout << "Enter task index: ";
+                cin >> index;
+                markTaskAsCompleted(index - 1);
+                break;
+            }
+            case 4: {
+                int index;
+                cout << "Enter task index: ";
+                cin >> index;
+                deleteTask(index - 1);
+                break;
+            }
+            case 5: {
+                int index;
+                cout << "Enter task index: ";
+                cin >> index;
+                setReminder(index - 1);
+                break;
+            }
+            case 6: {
+                string category;
+                cout << "Enter category: ";
+                getline(cin, category);
+                filterTasksByCategory(category);
+                break;
+            }
+            case 7:
+                cout << "Exiting...\n";
+                return 0;
+            default:
+                cout << "Invalid choice. Please try again.\n";
+                break;
+        }
+    }
+}
