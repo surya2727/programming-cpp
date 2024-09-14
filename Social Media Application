@@ -1,0 +1,111 @@
+#include <iostream>
+#include <vector>
+#include <map>
+
+using namespace std;
+
+// Define a struct to represent a user
+struct User {
+    string username;
+    vector<string> friends;
+};
+
+// Define a map to store users
+map<string, User> users;
+
+int main() {
+    while (true) {
+        cout << "1. Add User\n";
+        cout << "2. Make Friends\n";
+        cout << "3. Display All Users\n";
+        cout << "4. Display All Friendships\n";
+        cout << "5. Display Mutual Friends\n";
+        cout << "6. Exit\n";
+        cout << "\n";
+
+        int choice;
+        cin >> choice;
+
+        switch (choice) {
+            case 1: {
+                string username;
+                cout << "Enter Username: ";
+                cin >> username;
+
+                if (users.find(username) != users.end()) {
+                    cout << "User already exists.\n";
+                } else {
+                    User newUser;
+                    newUser.username = username;
+                    users[username] = newUser;
+                    cout << "User added successfully.\n";
+                }
+                break;
+            }
+            case 2: {
+                string username1, username2;
+                cout << "Enter First Username: ";
+                cin >> username1;
+                cout << "Enter Second Username: ";
+                cin >> username2;
+
+                if (users.find(username1) == users.end() || users.find(username2) == users.end()) {
+                    cout << "One or both users do not exist.\n";
+                } else {
+                    users[username1].friends.push_back(username2);
+                    users[username2].friends.push_back(username1);
+                    cout << "Friends added successfully.\n";
+                }
+                break;
+            }
+            case 3: {
+                cout << "All Users:\n";
+                for (const auto& user : users) {
+                    cout << user.second.username << endl;
+                }
+                break;
+            }
+            case 4: {
+                cout << "All Friendships:\n";
+                for (const auto& user : users) {
+                    for (const string& friendUsername : user.second.friends) {
+                        cout << user.second.username << " is friends with " << friendUsername << endl;
+                    }
+                }
+                break;
+            }
+            case 5: {
+                string username1, username2;
+                cout << "Enter First Username: ";
+                cin >> username1;
+                cout << "Enter Second Username: ";
+                cin >> username2;
+
+                if (users.find(username1) == users.end() || users.find(username2) == users.end()) {
+                    cout << "One or both users do not exist.\n";
+                } else {
+                    vector<string> mutualFriends;
+                    for (const string& friendUsername : users[username1].friends) {
+                        if (find(users[username2].friends.begin(), users[username2].friends.end(), friendUsername) != users[username2].friends.end()) {
+                            mutualFriends.push_back(friendUsername);
+                        }
+                    }
+
+                    cout << "Mutual friends between " << username1 << " and " << username2 << ":\n";
+                    for (const string& friendUsername : mutualFriends) {
+                        cout << friendUsername << endl;
+                    }
+                }
+                break;
+            }
+            case 6: {
+                cout << "Exiting...\n";
+                return 0;
+            }
+            default: {
+                cout << "Invalid choice. Please try again.\n";
+                break;
+            }
+        }
+    }
+}
